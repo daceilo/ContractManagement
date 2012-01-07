@@ -33,6 +33,8 @@
 						<g:sortableColumn property="financials" title="${message(code: 'contract.financials.label', default: 'Financials')}" />
 					
 						<th><g:message code="contract.vendor.label" default="Vendor" /></th>
+						
+						<th>PDF</th>
 					
 					</tr>
 				</thead>
@@ -50,6 +52,7 @@
 					
 						<td>${fieldValue(bean: contractInstance, field: "vendor")}</td>
 					
+						<td>PDF Link</td>
 					</tr>
 				</g:each>
 				</tbody>
