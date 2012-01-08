@@ -62,6 +62,17 @@ class ContractController {
         [contractInstance: contractInstance]
     }
 	
+	def pdf() {
+		def contractInstance = Contract.get(params.id)
+		if (!contractInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'contract.label', default: 'Contract'), params.id])
+			redirect(action: "list")
+			return
+		}
+		renderPdf(template: "/contract/print", model: [contractInstance: contractInstance], filename: contractInstance.description)
+		/* [contractInstance: contractInstance] */
+	}
+	
 	def print() {
 		def contractInstance = Contract.get(params.id)
 		if (!contractInstance) {
@@ -69,7 +80,6 @@ class ContractController {
 			redirect(action: "list")
 			return
 		}
-
 		[contractInstance: contractInstance]
 	}
 

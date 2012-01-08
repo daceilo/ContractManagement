@@ -1,6 +1,7 @@
 
 <%@ page import="ca.shaw.contractmanagement.Contract"%>
-<!doctype html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
 <meta name="layout" content="main"/>
@@ -9,8 +10,6 @@
 <title><g:message code="default.show.label" args="[entityName]" /></title>
 </head>
 <body>
-	<a href="#show-contract" class="skip" tabindex="-1"><g:message
-			code="default.link.skip.label" default="Skip to content&hellip;" /></a>
 
 	<div id="show-contract" class="content scaffold-show" role="main">
 		<h1>Contract</h1>

@@ -52,7 +52,7 @@
 					
 						<td>${fieldValue(bean: contractInstance, field: "vendor")}</td>
 					
-						<td>PDF Link</td>
+						<td><g:link class="create" action="pdf" id="${contractInstance.id}" target='_blank' >PDF</g:link></td>
 					</tr>
 				</g:each>
 				</tbody>
