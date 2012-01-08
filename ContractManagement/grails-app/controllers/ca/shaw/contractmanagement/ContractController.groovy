@@ -69,8 +69,7 @@ class ContractController {
 			redirect(action: "list")
 			return
 		}
-		renderPdf(template: "/contract/print", model: [contractInstance: contractInstance], filename: contractInstance.description)
-		/* [contractInstance: contractInstance] */
+		renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
 	}
 	
 	def print() {
