@@ -25,9 +25,7 @@
 					<tr>
 					
 						<g:sortableColumn property="description" title="${message(code: 'contract.description.label', default: 'Description')}" />
-					
-						<g:sortableColumn property="deliverables" title="${message(code: 'contract.deliverables.label', default: 'Deliverables')}" />
-					
+										
 						<g:sortableColumn property="timelines" title="${message(code: 'contract.timelines.label', default: 'Timelines')}" />
 					
 						<g:sortableColumn property="financials" title="${message(code: 'contract.financials.label', default: 'Financials')}" />
@@ -43,9 +41,7 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
 						<td><g:link action="show" id="${contractInstance.id}">${fieldValue(bean: contractInstance, field: "description")}</g:link></td>
-					
-						<td>${fieldValue(bean: contractInstance, field: "deliverables")}</td>
-					
+										
 						<td>${fieldValue(bean: contractInstance, field: "timelines")}</td>
 					
 						<td>${fieldValue(bean: contractInstance, field: "financials")}</td>
