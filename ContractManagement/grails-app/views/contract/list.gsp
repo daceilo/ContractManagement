@@ -42,11 +42,11 @@
 					
 						<td><g:link action="show" id="${contractInstance.id}">${fieldValue(bean: contractInstance, field: "description")}</g:link></td>
 										
-						<td>${fieldValue(bean: contractInstance, field: "timelines")}</td>
+						<td>${contractInstance.timelines}</td>
 					
-						<td>${fieldValue(bean: contractInstance, field: "financials")}</td>
+						<td>${contractInstance.financials}</td>
 					
-						<td>${fieldValue(bean: contractInstance, field: "vendor")}</td>
+						<td>${contractInstance.vendor}</td>
 					
 						<td><g:link class="create" action="pdf" id="${contractInstance.id}" target='_blank' >PDF</g:link></td>
 					</tr>

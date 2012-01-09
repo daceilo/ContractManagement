@@ -108,80 +108,10 @@ img {
 	color: #255b17;
 }
 
-fieldset,.property-list {
-	margin: 0.6em 1.25em 0 1.25em;
-	padding: 0.3em 1.8em 1.25em;
-	position: relative;
-	zoom: 1;
-	border: none;
-}
-
-.property-list .fieldcontain {
-	list-style: none;
-	overflow: hidden;
-	zoom: 1;
-}
-
-.fieldcontain {
-	margin-top: 1em;
-}
-
-.fieldcontain label,.fieldcontain .property-label {
-	color: #666666;
-	text-align: right;
-	width: 25%;
-}
-
-.fieldcontain .property-label {
-	float: left;
-}
-
-.fieldcontain .property-value {
-	display: block;
-	margin-left: 27%;
-}
-
 label {
 	cursor: pointer;
 	display: inline-block;
 	margin: 0 0.25em 0 0;
-}
-
-input,select,textarea {
-	background-color: #fcfcfc;
-	border: 1px solid #cccccc;
-	font-size: 1em;
-	padding: 0.2em 0.4em;
-}
-
-select {
-	padding: 0.2em 0.2em 0.2em 0;
-}
-
-select[multiple] {
-	vertical-align: top;
-}
-
-textarea {
-	width: 250px;
-	height: 150px;
-	overflow: auto;
-	vertical-align: top;
-}
-
-input[type=checkbox],input[type=radio] {
-	background-color: transparent;
-	border: 0;
-	padding: 0;
-}
-
-input:focus,select:focus,textarea:focus {
-	background-color: #ffffff;
-	border: 1px solid #eeeeee;
-	outline: 0;
-	-moz-box-shadow: 0 0 0.5em #ffffff;
-	-webkit-box-shadow: 0 0 0.5em #ffffff;
-	box-shadow: 0 0 0.5em #ffffff;
 }
 
 .required-indicator {
@@ -335,12 +265,12 @@ th:hover,tr:hover {
 	<div id="show-contract" class="content scaffold-show" role="main">
 		<h1>Contract</h1>
 
-		<ol class="property-list contract">
+		<ul class="property-list contract">
 
 			<g:if test="${contractInstance?.vendor}">
 				<li class="fieldcontain"><span id="vendor-label"
 					class="property-label"><g:message
-							code="contract.vendor.label" default="Vendor" /></span> <span
+							code="contract.vendor.label" default="Vendor" /></span><br/> <span
 					class="property-value" aria-labelledby="vendor-label"><g:link
 							controller="vendor" action="show"
 							id="${contractInstance?.vendor?.id}">
@@ -351,7 +281,7 @@ th:hover,tr:hover {
 			<g:if test="${contractInstance?.description}">
 				<li class="fieldcontain"><span id="description-label"
 					class="property-label"><g:message
-							code="contract.description.label" default="Description" /></span> <span
+							code="contract.description.label" default="Description" /></span><br/> <span
 					class="property-value" aria-labelledby="description-label"><g:fieldValue
 							bean="${contractInstance}" field="description" /></span></li>
 			</g:if>
@@ -359,25 +289,22 @@ th:hover,tr:hover {
 			<g:if test="${contractInstance?.deliverables}">
 				<li class="fieldcontain"><span id="deliverables-label"
 					class="property-label"><g:message
-							code="contract.deliverables.label" default="Deliverables" /></span> <span
-					class="property-value" aria-labelledby="deliverables-label"><g:fieldValue
-							bean="${contractInstance}" field="deliverables" /></span></li>
+							code="contract.deliverables.label" default="Deliverables" /></span><br/> <span
+					class="property-value" aria-labelledby="deliverables-label">${contractInstance?.deliverables}</span></li>
 			</g:if>
 
 			<g:if test="${contractInstance?.timelines}">
 				<li class="fieldcontain"><span id="timelines-label"
 					class="property-label"><g:message
-							code="contract.timelines.label" default="Timelines" /></span> <span
-					class="property-value" aria-labelledby="timelines-label"><g:fieldValue
-							bean="${contractInstance}" field="timelines" /></span></li>
+							code="contract.timelines.label" default="Timelines" /></span><br/> <span
+					class="property-value" aria-labelledby="timelines-label">${contractInstance?.timelines}</span></li>
 			</g:if>
 
 			<g:if test="${contractInstance?.financials}">
 				<li class="fieldcontain"><span id="financials-label"
 					class="property-label"><g:message
-							code="contract.financials.label" default="Financials" /></span> <span
-					class="property-value" aria-labelledby="financials-label"><g:fieldValue
-							bean="${contractInstance}" field="financials" /></span></li>
+							code="contract.financials.label" default="Financials" /></span><br/> <span
+					class="property-value" aria-labelledby="financials-label">${contractInstance?.financials}</span></li>
 			</g:if>
 
 			<g:if test="${contractInstance?.clauses}">
@@ -391,7 +318,7 @@ th:hover,tr:hover {
 								<g:if test="${c?.description}">
 									<li class="fieldcontain"><span id="description-label"
 										class="property-label"><g:message
-												code="clause.description.label" default="Description" /></span> <span
+												code="clause.description.label" default="Description" /></span><br/> <span
 										class="property-value" aria-labelledby="description-label"><g:fieldValue
 												bean="${c}" field="description" /></span></li>
 								</g:if>
@@ -399,9 +326,8 @@ th:hover,tr:hover {
 								<g:if test="${c?.content}">
 									<li class="fieldcontain"><span id="content-label"
 										class="property-label"><g:message
-												code="clause.content.label" default="Content" /></span> <span
-										class="property-value" aria-labelledby="content-label"><g:fieldValue
-												bean="${c}" field="content" /></span></li>
+												code="clause.content.label" default="Content" /></span><br/> <span
+										class="property-value" aria-labelledby="content-label">${c?.content}</span></li>
 								</g:if>
 
 								<g:if test="${c?.vendor}">
@@ -421,7 +347,7 @@ th:hover,tr:hover {
 					</g:each></li>
 			</g:if>
 
-		</ol>
+		</ul>
 
 	</div>
 </body>

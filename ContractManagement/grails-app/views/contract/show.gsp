@@ -36,7 +36,7 @@
 				<li class="fieldcontain">
 					<span id="deliverables-label" class="property-label"><g:message code="contract.deliverables.label" default="Deliverables" /></span>
 					
-						<span class="property-value" aria-labelledby="deliverables-label"><g:fieldValue bean="${contractInstance}" field="deliverables"/></span>
+						<span class="property-value" aria-labelledby="deliverables-label">${contractInstance?.deliverables}</span>
 					
 				</li>
 				</g:if>
@@ -45,7 +45,7 @@
 				<li class="fieldcontain">
 					<span id="timelines-label" class="property-label"><g:message code="contract.timelines.label" default="Timelines" /></span>
 					
-						<span class="property-value" aria-labelledby="timelines-label"><g:fieldValue bean="${contractInstance}" field="timelines"/></span>
+						<span class="property-value" aria-labelledby="timelines-label">${contractInstance?.timelines}</span>
 					
 				</li>
 				</g:if>
@@ -54,7 +54,7 @@
 				<li class="fieldcontain">
 					<span id="financials-label" class="property-label"><g:message code="contract.financials.label" default="Financials" /></span>
 					
-						<span class="property-value" aria-labelledby="financials-label"><g:fieldValue bean="${contractInstance}" field="financials"/></span>
+						<span class="property-value" aria-labelledby="financials-label">${contractInstance?.financials}</span>
 					
 				</li>
 				</g:if>

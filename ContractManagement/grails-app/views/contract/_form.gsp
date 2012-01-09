@@ -15,7 +15,8 @@
 		<g:message code="contract.deliverables.label" default="Deliverables" />
 		
 	</label>
-	<g:textArea name="deliverables" cols="40" rows="5" value="${contractInstance?.deliverables}"/>
+	
+	<richui:richTextEditor name="deliverables" value="${contractInstance?.deliverables}" width="525" />
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: contractInstance, field: 'timelines', 'error')} ">
@@ -23,15 +24,15 @@
 		<g:message code="contract.timelines.label" default="Timelines" />
 		
 	</label>
-	<g:textArea name="timelines" cols="40" rows="5" value="${contractInstance?.timelines}"/>
+	<richui:richTextEditor name="timelines" value="${contractInstance?.timelines}" width="525" />	
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: contractInstance, field: 'financials', 'error')} ">
 	<label for="financials">
 		<g:message code="contract.financials.label" default="Financials" />
 		
-	</label>
-	<g:textArea name="financials" cols="40" rows="5" value="${contractInstance?.financials}"/>
+	</label>	
+	<richui:richTextEditor name="financials" value="${contractInstance?.financials}" width="525" />	
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: contractInstance, field: 'clauses', 'error')} ">

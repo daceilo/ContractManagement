@@ -32,9 +32,9 @@ class Contract {
 	
     static constraints = {
 		description()
-		deliverables(widget:'textarea')
-		timelines(widget:'textarea')
-		financials(widget:'textarea')	
+		deliverables(widget:'textarea', type: 'text', maxSize: 65535)
+		timelines(widget:'textarea', type: 'text', maxSize: 65535)
+		financials(widget:'textarea', type: 'text', maxSize: 65535)	
     }
 	
 	String toString() {

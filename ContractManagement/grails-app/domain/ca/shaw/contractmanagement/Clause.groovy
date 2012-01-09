@@ -29,7 +29,7 @@ class Clause {
 	
     static constraints = {
 		description(nullable:false, blank:false)
-		content(widget:'textarea')
+		content(widget:'textarea', type: "text", maxSize: 65535)
     }
 	
 	String toString() {

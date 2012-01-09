@@ -36,7 +36,7 @@
 				<li class="fieldcontain">
 					<span id="content-label" class="property-label"><g:message code="clause.content.label" default="Content" /></span>
 					
-						<span class="property-value" aria-labelledby="content-label"><g:fieldValue bean="${clauseInstance}" field="content"/></span>
+						<span class="property-value" aria-labelledby="content-label">${clauseInstance?.content}</span>
 					
 				</li>
 				</g:if>

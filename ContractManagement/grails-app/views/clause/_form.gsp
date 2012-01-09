@@ -15,7 +15,7 @@
 		<g:message code="clause.content.label" default="Content" />
 		
 	</label>
-	<g:textArea name="content" cols="40" rows="5" value="${clauseInstance?.content}"/>
+	<richui:richTextEditor name="content" value="${clauseInstance?.content}" width="525" />		
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: clauseInstance, field: 'vendor', 'error')} required">

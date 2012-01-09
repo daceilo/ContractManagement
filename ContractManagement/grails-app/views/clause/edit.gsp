@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 	<head>
+		<resource:richTextEditor type="full" />
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'clause.label', default: 'Clause')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
