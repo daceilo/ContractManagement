@@ -6,18 +6,22 @@ import grails.util.Environment
 class BootStrap {
 
 	def init = { servletContext ->
+		def content = '<p><strong><span style="text-decoration: underline;">Content for clause 1</span></strong></p>\n <p>This is the content for the first clause. There should be <em>various</em>&nbsp;forms of HTML formatting that will need to be applied to <span style="text-decoration: line-through;">HTML</span>&nbsp;<strong>WORD.</strong></p> <p style="padding-left: 30px;">Does it process this indent?</p> \n<p>\n <ul> \n<li>How about a bullted list?</li>\n </ul> \n</p>'
 		switch (Environment.current) {
 			// For dev environment, populate some data on start
 			// Two vendors, two clauses
-			// One contract for first vendor with first clause
+			// One contract for first vendor with first clause			
 			case Environment.DEVELOPMENT:
 				if (!Vendor.count()) {
 					def vendorOne = new Vendor(vendorName: "Vendor 1").save(failOnError: true)
 					def vendorTwo = new Vendor(vendorName: "Vendor 2").save(failOnError: true)
-					def clauseOne = new Clause(description: "Clause 1", content: "Content for clause 1", vendor: vendorOne).save(failOnError:true)
+					def clauseOne = new Clause(description: "Clause 1", content: content, vendor: vendorOne).save(failOnError:true)
 					def clauseTwo = new Clause(description: "Clasue 2", content: "Content for clause 2", vendor: vendorTwo).save(failOnError:true)
-					def contractOne = new Contract(description: "SOW1", deliverables: "Deliverables", timelines: "Timelines", 
-						financials: "Financials", vendor: vendorOne).save(failOnError:true)
+					def contractOne = new Contract(description: "SOW1", 
+						deliverables: '<p><strong>Deliverables</strong></p>', 
+						timelines: '<p><em>Financials</em></p>', 
+						financials: '<p><span style="text-decoration: underline;">Timelines</span></p>', 
+						vendor: vendorOne).save(failOnError:true)
 					vendorOne.addToClauses(clauseOne).save(failOnError:true)
 					vendorTwo.addToClauses(clauseTwo).save(failOnError:true)
 					vendorOne.addToContracts(contractOne).save(failOnError:true)
