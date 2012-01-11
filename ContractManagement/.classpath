@@ -298,6 +298,7 @@
 			<attribute name="com.springsource.sts.grails.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/docx4j-2.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/docx4j-nightly-20120105.jar"/>
+	<classpathentry kind="lib" path="lib/docx4j-xhtmlrenderer-nightly-20111219.jar"/>
 	<classpathentry kind="output" path="target-eclipse/classes"/>
 </classpath>
