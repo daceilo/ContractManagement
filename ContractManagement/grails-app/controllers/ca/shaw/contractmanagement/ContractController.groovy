@@ -22,6 +22,13 @@ package ca.shaw.contractmanagement
 */
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.docx4j.openpackaging.contenttype.ContentType
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage
+import org.docx4j.openpackaging.parts.PartName
+import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart
+import org.docx4j.relationships.Relationship
+import org.docx4j.wml.CTAltChunk
+import org.docx4j.jaxb.Context;
 
 class ContractController {
 
@@ -70,6 +77,54 @@ class ContractController {
 			return
 		}
 		renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
+	}
+	
+	def addToWord = { partName, stringToAdd, wordMLPackage ->
+		
+		AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName(partName));
+		afiPart.setBinaryData(stringToAdd.getBytes());
+		afiPart.setContentType(new ContentType("text/html"));
+		Relationship altChunkRel = wordMLPackage.getMainDocumentPart().addTargetPart(afiPart);
+		// .. the bit in document body
+		CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
+		ac.setId(altChunkRel.getId() );
+		wordMLPackage.getMainDocumentPart().addObject(ac);
+		// .. content type
+		wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
+	}
+	
+	def exportWord() {
+		def contractInstance = Contract.get(params.id)
+		WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage()
+		def mainPart = wordMLPackage.getMainDocumentPart()
+	   
+		// create some styled heading...
+		mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
+		mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
+	   
+		addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables, wordMLPackage)
+		// Should have this twice in the doc
+		mainPart.addParagraphOfText("Deliverables:")
+		mainPart.addParagraphOfText(contractInstance?.deliverables.decodeHTML())
+		mainPart.addParagraphOfText("Timelines:")
+		mainPart.addParagraphOfText(contractInstance?.timelines.decodeHTML())
+		mainPart.addParagraphOfText("Financials:")
+		mainPart.addParagraphOfText(contractInstance?.financials.decodeHTML())
+		// Add our list of assets to the document
+		contractInstance?.clauses?.each { clause ->
+		  mainPart.addParagraphOfText(clause.description)
+		  mainPart.addParagraphOfText(clause.content + "(" + clause.vendor + ")")
+		}
+	   
+		// write out our word doc to disk
+		File file = File.createTempFile("wordexport-", ".docx")
+		wordMLPackage.save file
+	   
+		// and send it all back to the browser
+		response.setHeader("Content-disposition", "attachment; filename=" + contractInstance?.description + ".docx");
+		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+		response.outputStream << file.readBytes()
+		file.delete()
 	}
 	
 	def print() {

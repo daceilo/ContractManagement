@@ -21,6 +21,7 @@ class BootStrap {
 					vendorOne.addToClauses(clauseOne).save(failOnError:true)
 					vendorTwo.addToClauses(clauseTwo).save(failOnError:true)
 					vendorOne.addToContracts(contractOne).save(failOnError:true)
+					contractOne.addToClauses(clauseOne).save(failOnError:true)
 				}
 				break
 		}

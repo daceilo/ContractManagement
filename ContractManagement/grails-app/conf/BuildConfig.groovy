@@ -23,8 +23,12 @@ grails.project.dependency.resolution = {
         mavenCentral()
 
         // uncomment these to enable remote dependency resolution from public Maven repositories
-        //mavenCentral()
-        //mavenLocal()
+        mavenCentral()
+        mavenLocal()
+		//These two repos added to support DOCX4j (Word document creation)
+		mavenRepo "http://dev.plutext.org/svn/docx4j/trunk/docx4j/m2"
+		mavenRepo "https://webdavclient4j.svn.sourceforge.net/svnroot/webdavclient4j/trunk/m2"
+		
         //mavenRepo "http://snapshots.repository.codehaus.org"
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
@@ -32,7 +36,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
+		compile 'org.docx4j:docx4j:2.7.1'
         // runtime 'mysql:mysql-connector-java:5.1.16'
     }
 

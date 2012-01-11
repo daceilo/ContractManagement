@@ -50,7 +50,8 @@
 					
 						<td>${contractInstance.vendor}</td>
 					
-						<td><g:link class="create" action="pdf" id="${contractInstance.id}" target='_blank' >PDF</g:link></td>
+						<td><g:link class="create" action="exportWord" id="${contractInstance.id}">Word Doc</g:link></td>
+						
 					</tr>
 				</g:each>
 				</tbody>
