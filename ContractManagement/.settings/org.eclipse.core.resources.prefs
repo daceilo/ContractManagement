@@ -1,4 +1,4 @@
-#Wed Jan 11 21:17:40 MST 2012
+#Wed Jan 11 22:02:13 MST 2012
 eclipse.preferences.version=1
 encoding//.link_to_grails_plugins/jquery-1.7.1/grails-app/i18n=UTF-8
 encoding//.link_to_grails_plugins/jquery-1.7.1/grails-app/i18n/messages.properties=UTF-8
@@ -14,6 +14,8 @@ encoding//.link_to_grails_plugins/richui-0.8/grails-app/i18n/messages.properties
 encoding//.link_to_grails_plugins/spring-security-core-1.2.7/grails-app/i18n=UTF-8
 encoding//.link_to_grails_plugins/spring-security-core-1.2.7/grails-app/i18n/spring-security-core.properties=UTF-8
 encoding//.link_to_grails_plugins/spring-security-core-1.2.7/grails-app/i18n/spring-security-core_fr.properties=UTF-8
+encoding//.link_to_grails_plugins/spring-security-ui-0.1.2/grails-app/i18n=UTF-8
+encoding//.link_to_grails_plugins/spring-security-ui-0.1.2/grails-app/i18n/messages.spring-security-ui.properties=UTF-8
 encoding//grails-app/i18n=UTF-8
 encoding//grails-app/i18n/messages.properties=UTF-8
 encoding//grails-app/i18n/messages_cs_CZ.properties=UTF-8
