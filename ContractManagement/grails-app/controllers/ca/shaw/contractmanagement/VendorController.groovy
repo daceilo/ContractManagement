@@ -22,6 +22,7 @@ package ca.shaw.contractmanagement
 */
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured;
 
 class VendorController {
 
@@ -36,10 +37,12 @@ class VendorController {
         [vendorInstanceList: Vendor.list(params), vendorInstanceTotal: Vendor.count()]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def create() {
         [vendorInstance: new Vendor(params)]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def save() {
         def vendorInstance = new Vendor(params)
         if (!vendorInstance.save(flush: true)) {
@@ -62,6 +65,7 @@ class VendorController {
         [vendorInstance: vendorInstance]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def edit() {
         def vendorInstance = Vendor.get(params.id)
         if (!vendorInstance) {
@@ -73,6 +77,7 @@ class VendorController {
         [vendorInstance: vendorInstance]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def update() {
         def vendorInstance = Vendor.get(params.id)
         if (!vendorInstance) {
@@ -103,6 +108,7 @@ class VendorController {
         redirect(action: "show", id: vendorInstance.id)
     }
 
+	@Secured(['ROLE_ADMIN'])
     def delete() {
         def vendorInstance = Vendor.get(params.id)
         if (!vendorInstance) {

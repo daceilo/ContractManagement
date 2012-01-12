@@ -22,6 +22,7 @@ package ca.shaw.contractmanagement
 */
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured;
 
 class ClauseController {
 
@@ -36,10 +37,12 @@ class ClauseController {
         [clauseInstanceList: Clause.list(params), clauseInstanceTotal: Clause.count()]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def create() {
         [clauseInstance: new Clause(params)]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def save() {
         def clauseInstance = new Clause(params)
         if (!clauseInstance.save(flush: true)) {
@@ -62,6 +65,7 @@ class ClauseController {
         [clauseInstance: clauseInstance]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def edit() {
         def clauseInstance = Clause.get(params.id)
         if (!clauseInstance) {
@@ -73,6 +77,7 @@ class ClauseController {
         [clauseInstance: clauseInstance]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def update() {
         def clauseInstance = Clause.get(params.id)
         if (!clauseInstance) {
@@ -103,6 +108,7 @@ class ClauseController {
         redirect(action: "show", id: clauseInstance.id)
     }
 
+	@Secured(['ROLE_ADMIN'])
     def delete() {
         def clauseInstance = Clause.get(params.id)
         if (!clauseInstance) {
