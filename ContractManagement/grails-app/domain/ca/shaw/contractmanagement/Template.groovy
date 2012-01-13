@@ -5,12 +5,14 @@ class Template {
 	byte[] data
 	String fileName
 	String description
+	String type
 	int size
 	
     static constraints = {
 		data(nullable: false, minSize: 1, maxSize: TEN_MEG_IN_BYTES )
 		fileName(display: false, nullable: false, blank: false )
 		description( nullable: false, blank: false )
-		size(display: false, nullable: false )		
+		size(display: false, nullable: false )	
+		type(display: false, nullable: false, blank: false)	
     }
 }

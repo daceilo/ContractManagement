@@ -23,6 +23,7 @@ class TemplateController {
         def templateInstance = new Template(params)
 		templateInstance.fileName = params.data.getOriginalFilename()
 		templateInstance.size = params.data.getSize()
+		templateInstance.type = params.data.getContentType()
         if (!templateInstance.save(flush: true)) {
             render(view: "create", model: [templateInstance: templateInstance])
             return
