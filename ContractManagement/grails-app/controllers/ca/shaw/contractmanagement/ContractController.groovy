@@ -236,4 +236,57 @@ class ContractController {
 			redirect(action: "show", id: params.id)
 		}
 	}
+	
+	//TODO Finish this off
+	// Workflow to guide user through creation of a contract
+	def createContractFlow = {
+		beginCreate {
+			render(view: "selectVendorAndDescription")
+			on("next").to "addDeliverables"
+		}
+		
+		addDeliverables {
+			on("next").to "addFinancials"
+			on("return").to "beginCreate"
+		}
+		
+		addFinancials {
+			on("next").to "addTimelines"
+			on("return").to "addDeliverables"
+		}
+		
+		addTimelines {
+			on("next").to "addClauses"
+			on("return").to "addFinancials"
+			
+		}
+		
+		addClauses {						
+			on("finished").to "finished"
+			on("return").to "addTimelines"			
+		}
+		
+		finished {
+			action {
+				def description = flow.description
+				def vendor = flow.vendor
+				def deliverables = flow.deliverables
+				def timelines = flow.timelines
+				def clauses = flow.clauses
+				def financials = flow.financials
+				
+				def contract = new Contract(description: description,
+					deliverables: deliverables,
+					timelines: timelines,
+					financials: financials,
+					vendor: vendor).save(flush:true)
+					
+				clauses.each { clause ->
+					contract.addToClauses(clause).save(flush:true)
+				}
+				[contract: contract]			
+			}
+			on(Exception).to "addClauses"			
+		}
+	}
 }

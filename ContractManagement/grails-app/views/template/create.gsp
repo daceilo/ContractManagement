@@ -1,34 +1,32 @@
-<%@ page import="ca.shaw.contractmanagement.Contract" %>
+<%@ page import="ca.shaw.contractmanagement.Template" %>
 <!doctype html>
 <html>
 	<head>
-		<resource:richTextEditor type="full" />
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'contract.label', default: 'Contract')}" />
+		<g:set var="entityName" value="${message(code: 'template.label', default: 'Template')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#create-contract" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<a href="#create-template" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
-			<ul>				
-				<li><g:link class="list" controller="vendor" action="list">Vendors</g:link></li>
-				<li><g:link class="list" controller="clause" action="list">Clauses</g:link></li>
+			<ul>
+				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
-		<div id="create-contract" class="content scaffold-create" role="main">
+		<div id="create-template" class="content scaffold-create" role="main">
 			<h1><g:message code="default.create.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<g:hasErrors bean="${contractInstance}">
+			<g:hasErrors bean="${templateInstance}">
 			<ul class="errors" role="alert">
-				<g:eachError bean="${contractInstance}" var="error">
+				<g:eachError bean="${templateInstance}" var="error">
 				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form action="save" >
+			<g:form action="save"  enctype="multipart/form-data">
 				<fieldset class="form">
 					<g:render template="form"/>
 				</fieldset>

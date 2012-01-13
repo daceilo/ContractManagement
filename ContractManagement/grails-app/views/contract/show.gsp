@@ -10,7 +10,7 @@
 	<body>
 		<a href="#show-contract" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
-			<ul>
+			<ul>				
 				<li><g:link class="list" controller="vendor" action="list">Vendors</g:link></li>
 				<li><g:link class="list" controller="clause" action="list">Clauses</g:link></li>
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
