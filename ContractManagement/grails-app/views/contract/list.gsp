@@ -14,6 +14,7 @@
 				<li><g:link controller="vendor" action="list">Vendors</g:link></li>
 				<li><g:link controller="contract" action="list">Contracts</g:link></li>
 				<li><g:link controller="clause" action="list">Clauses</g:link></li>
+				<li><g:link class="list" controller="template" action="list">Templates</g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
