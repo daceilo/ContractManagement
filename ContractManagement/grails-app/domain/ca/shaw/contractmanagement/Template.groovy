@@ -8,9 +8,9 @@ class Template {
 	int size
 	
     static constraints = {
-		data( nullable: false, minSize: 1, maxSize: TEN_MEG_IN_BYTES )
-		fileName( nullable: false, blank: false )
+		data(nullable: false, minSize: 1, maxSize: TEN_MEG_IN_BYTES )
+		fileName(display: false, nullable: false, blank: false )
 		description( nullable: false, blank: false )
-		size( nullable: false )		
+		size(display: false, nullable: false )		
     }
 }
