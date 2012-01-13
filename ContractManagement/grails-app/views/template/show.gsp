@@ -11,9 +11,9 @@
 		<a href="#show-template" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><g:link controller="vendor" action="list">Vendors</g:link></li>
-				<li><g:link controller="contract" action="list">Contracts</g:link></li>
-				<li><g:link controller="clause" action="list">Clauses</g:link></li>
+				<li><g:link class="list" controller="vendor" action="list">Vendors</g:link></li>
+				<li><g:link class="list" controller="contract" action="list">Contracts</g:link></li>
+				<li><g:link class="list" controller="clause" action="list">Clauses</g:link></li>
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
@@ -24,14 +24,7 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list template">
-			
-				<g:if test="${templateInstance?.data}">
-				<li class="fieldcontain">
-					<span id="data-label" class="property-label"><g:message code="template.data.label" default="Data" /></span>
-					
-				</li>
-				</g:if>
-			
+							
 				<g:if test="${templateInstance?.fileName}">
 				<li class="fieldcontain">
 					<span id="fileName-label" class="property-label"><g:message code="template.fileName.label" default="File Name" /></span>
@@ -54,7 +47,7 @@
 				<li class="fieldcontain">
 					<span id="size-label" class="property-label"><g:message code="template.size.label" default="Size" /></span>
 					
-						<span class="property-value" aria-labelledby="size-label"><g:fieldValue bean="${templateInstance}" field="size"/></span>
+						<span class="property-value" aria-labelledby="size-label"><g:fieldValue bean="${templateInstance}" field="size"/> bytes</span>
 					
 				</li>
 				</g:if>

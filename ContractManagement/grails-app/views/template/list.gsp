@@ -11,9 +11,9 @@
 		<a href="#list-template" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><g:link controller="vendor" action="list">Vendors</g:link></li>
-				<li><g:link controller="contract" action="list">Contracts</g:link></li>
-				<li><g:link controller="clause" action="list">Clauses</g:link></li>
+				<li><g:link class="list" controller="vendor" action="list">Vendors</g:link></li>
+				<li><g:link class="list" controller="contract" action="list">Contracts</g:link></li>
+				<li><g:link class="list" controller="clause" action="list">Clauses</g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
@@ -25,9 +25,7 @@
 			<table>
 				<thead>
 					<tr>
-					
-						<g:sortableColumn property="data" title="${message(code: 'template.data.label', default: 'Data')}" />
-					
+										
 						<g:sortableColumn property="fileName" title="${message(code: 'template.fileName.label', default: 'File Name')}" />
 					
 						<g:sortableColumn property="description" title="${message(code: 'template.description.label', default: 'Description')}" />
@@ -40,13 +38,11 @@
 				<g:each in="${templateInstanceList}" status="i" var="templateInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${templateInstance.id}">${fieldValue(bean: templateInstance, field: "data")}</g:link></td>
-					
-						<td>${fieldValue(bean: templateInstance, field: "fileName")}</td>
-					
+						<td><g:link action="show" id="${templateInstance.id}">${fieldValue(bean: templateInstance, field: "fileName")}</g:link></td>
+										
 						<td>${fieldValue(bean: templateInstance, field: "description")}</td>
 					
-						<td>${fieldValue(bean: templateInstance, field: "size")}</td>
+						<td>${fieldValue(bean: templateInstance, field: "size")} bytes</td>
 					
 					</tr>
 				</g:each>
