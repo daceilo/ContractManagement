@@ -32,6 +32,14 @@ class TemplateController {
 		flash.message = message(code: 'default.created.message', args: [message(code: 'template.label', default: 'Template'), templateInstance.id])
         redirect(action: "show", id: templateInstance.id)
     }
+	
+	def downloadTemplate() {
+		def templateInstance = Template.get(params.id)
+				
+		response.setHeader("Content-disposition", "attachment; filename=" + templateInstance.fileName);
+		response.setContentType(templateInstance.type)
+		response.outputStream << templateInstance.data
+	}
 
     def show() {
         def templateInstance = Template.get(params.id)

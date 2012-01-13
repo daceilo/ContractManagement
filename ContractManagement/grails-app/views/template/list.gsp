@@ -32,6 +32,7 @@
 					
 						<g:sortableColumn property="size" title="${message(code: 'template.size.label', default: 'Size')}" />
 					
+						<th>Download</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -44,6 +45,7 @@
 					
 						<td>${fieldValue(bean: templateInstance, field: "size")} bytes</td>
 					
+						<td><g:link action="downloadTemplate" id="${templateInstance.id}">Download</g:link></td>
 					</tr>
 				</g:each>
 				</tbody>
