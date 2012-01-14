@@ -270,5 +270,6 @@
 			<attribute name="com.springsource.sts.grails.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/xmlgraphics-commons-1.4.jar"/>
 	<classpathentry kind="output" path="target-eclipse/classes"/>
 </classpath>

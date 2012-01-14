@@ -29,12 +29,14 @@ class Contract {
 	String deliverables
 	String timelines
 	String financials
+	Template template
 	
     static constraints = {
 		description()
 		deliverables(widget:'textarea', type: 'text', maxSize: 65535)
 		timelines(widget:'textarea', type: 'text', maxSize: 65535)
 		financials(widget:'textarea', type: 'text', maxSize: 65535)	
+		template(nullable: true, blank: true)
     }
 	
 	String toString() {

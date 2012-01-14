@@ -43,6 +43,13 @@
 	<g:select name="clauses" from="${ca.shaw.contractmanagement.Clause.list()}" multiple="multiple" optionKey="id" size="5" value="${contractInstance?.clauses*.id}" class="many-to-many"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: contractInstance, field: 'template', 'error')}">
+	<label for="template">
+		<g:message code="contract.template.label" default="Template" />
+	</label>
+	<g:select id="template" name="template.id" from="${ca.shaw.contractmanagement.Template.list()}" optionKey="id" value="${contractInstance?.template?.id}" class="many-to-one"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: contractInstance, field: 'vendor', 'error')} required">
 	<label for="vendor">
 		<g:message code="contract.vendor.label" default="Vendor" />

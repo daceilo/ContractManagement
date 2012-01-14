@@ -72,6 +72,15 @@
 				</li>
 				</g:if>
 			
+			<g:if test="${contractInstance?.template}">
+				<li class="fieldcontain">
+					<span id="template-label" class="property-label"><g:message code="contract.template.label" default="Template" /></span>
+					
+						<span class="property-value" aria-labelledby="template-label"><g:link controller="template" action="show" id="${contractInstance?.template?.id}">${contractInstance?.template?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${contractInstance?.vendor}">
 				<li class="fieldcontain">
 					<span id="vendor-label" class="property-label"><g:message code="contract.vendor.label" default="Vendor" /></span>

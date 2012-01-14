@@ -28,7 +28,9 @@ import org.docx4j.openpackaging.parts.PartName
 import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart
 import org.docx4j.relationships.Relationship
 import org.docx4j.wml.CTAltChunk
+import org.docx4j.wml.Document
 import org.docx4j.jaxb.Context;
+import org.docx4j.XmlUtils;
 
 class ContractController {
 
@@ -109,30 +111,70 @@ class ContractController {
 		wordMLPackage.getMainDocumentPart().addObject(ac);
 	}
 
-	def exportWord() {
-		def contractInstance = Contract.get(params.id)
-		WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage()
-		def mainPart = wordMLPackage.getMainDocumentPart()
-
-		// create some styled heading...
-		mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
-		mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
-
-		addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables, wordMLPackage)
-
-		addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines, wordMLPackage)
-
-		addToWord("/financials.html", "Financials: " + contractInstance?.financials, wordMLPackage)
-
-
-		// Add our list of assets to the document
-		def i = 1
-		contractInstance?.clauses?.each { clause ->
-			addToWord("/clause-" + i + ".html", clause.description, wordMLPackage)
-			addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")", wordMLPackage)
-			i++
+	def getMLPackage = { contractInstance ->
+		def wordMLPackage
+		if (contractInstance.template) {
+			wordMLPackage = WordprocessingMLPackage.load(new ByteArrayInputStream(contractInstance?.template?.data));
+		} else {
+			wordMLPackage = WordprocessingMLPackage.createPackage()
 		}
 
+		return wordMLPackage
+	}
+
+	def exportWordFromTemplate = { contractInstance, mainPart ->
+		def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement();
+		
+		//xml --> string
+		def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
+		
+		println(xml)
+		
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		
+		log.error("Going to map " + contractInstance)
+		
+		mappings.put("title", contractInstance.description);
+		mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())
+		mappings.put("deliverables", contractInstance.deliverables)
+		mappings.put("financials", contractInstance.financials)
+		mappings.put("timelines", contractInstance.timelines)
+		mappings.put("clauses", "Clauses would go here")
+		
+		//valorize template
+		def  obj = XmlUtils.unmarshallFromTemplate(xml, mappings);		
+		
+		//change  JaxbElement
+		mainPart.setJaxbElement((Document) obj);
+	}
+
+	def exportWord() {
+		def contractInstance = Contract.get(params.id)
+		WordprocessingMLPackage wordMLPackage = getMLPackage(contractInstance)
+		def mainPart = wordMLPackage.getMainDocumentPart()
+
+		if (contractInstance.template) {
+			exportWordFromTemplate(contractInstance, mainPart)
+		} else {
+			// create some styled heading...
+			mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
+			mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
+
+			addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables, wordMLPackage)
+
+			addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines, wordMLPackage)
+
+			addToWord("/financials.html", "Financials: " + contractInstance?.financials, wordMLPackage)
+
+
+			// Add our list of assets to the document
+			def i = 1
+			contractInstance?.clauses?.each { clause ->
+				addToWord("/clause-" + i + ".html", clause.description, wordMLPackage)
+				addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")", wordMLPackage)
+				i++
+			}
+		}
 		// write out our word doc to disk
 		File file = File.createTempFile("wordexport-", ".docx")
 		wordMLPackage.save file
@@ -236,7 +278,7 @@ class ContractController {
 			redirect(action: "show", id: params.id)
 		}
 	}
-	
+
 	//TODO Finish this off
 	// Workflow to guide user through creation of a contract
 	def createContractFlow = {
@@ -244,28 +286,28 @@ class ContractController {
 			render(view: "selectVendorAndDescription")
 			on("next").to "addDeliverables"
 		}
-		
+
 		addDeliverables {
 			on("next").to "addFinancials"
 			on("return").to "beginCreate"
 		}
-		
+
 		addFinancials {
 			on("next").to "addTimelines"
 			on("return").to "addDeliverables"
 		}
-		
+
 		addTimelines {
 			on("next").to "addClauses"
 			on("return").to "addFinancials"
-			
+
 		}
-		
-		addClauses {						
+
+		addClauses {
 			on("finished").to "finished"
-			on("return").to "addTimelines"			
+			on("return").to "addTimelines"
 		}
-		
+
 		finished {
 			action {
 				def description = flow.description
@@ -274,19 +316,19 @@ class ContractController {
 				def timelines = flow.timelines
 				def clauses = flow.clauses
 				def financials = flow.financials
-				
+
 				def contract = new Contract(description: description,
-					deliverables: deliverables,
-					timelines: timelines,
-					financials: financials,
-					vendor: vendor).save(flush:true)
-					
+						deliverables: deliverables,
+						timelines: timelines,
+						financials: financials,
+						vendor: vendor).save(flush:true)
+
 				clauses.each { clause ->
 					contract.addToClauses(clause).save(flush:true)
 				}
-				[contract: contract]			
+				[contract: contract]
 			}
-			on(Exception).to "addClauses"			
+			on(Exception).to "addClauses"
 		}
 	}
 }

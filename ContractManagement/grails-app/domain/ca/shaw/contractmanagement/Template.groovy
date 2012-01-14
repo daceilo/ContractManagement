@@ -36,4 +36,8 @@ class Template {
 		size(display: false, nullable: false )	
 		type(display: false, nullable: false, blank: false)	
     }
+	
+	String toString() {
+		fileName + " - " + description
+	}
 }
