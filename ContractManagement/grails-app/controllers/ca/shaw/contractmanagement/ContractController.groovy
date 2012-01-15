@@ -111,6 +111,8 @@ class ContractController {
 		wordMLPackage.getMainDocumentPart().addObject(ac);
 	}
 
+    // If the contract has a template associated with it, then return back a docx based on the template
+    // If the contract has no template, create a new package
 	def getMLPackage = { contractInstance ->
 		def wordMLPackage
 		if (contractInstance.template) {
@@ -122,6 +124,9 @@ class ContractController {
 		return wordMLPackage
 	}
 
+    // This only works if the string doesn't contain HTML. If there is HTML, elements end up being blanked out in the
+    // document.
+    //TODO make this work with HTML formatting
 	def exportWordFromTemplate = { contractInstance, mainPart ->
 		def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement();
 		
