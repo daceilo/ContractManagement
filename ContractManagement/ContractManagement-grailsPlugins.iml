@@ -99,6 +99,8 @@
     <orderEntry type="library" scope="PROVIDED" name="grails-2.0.0" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="docx4j-nightly-20120105" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="xalan" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="serializer" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="commons-io-2.1" level="project" />
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (ContractManagement-grailsPlugins)">
         <CLASSES>

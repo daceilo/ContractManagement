@@ -132,19 +132,21 @@ class ContractController {
 
         // Gives us a list of block elements
         def blockElements = mainPart.getJaxbElement().getBody().getEGBlockLevelElts()
+        log.debug("Received " + blockElements.size() + " block elements.")
 
         blockElements.each { element ->
             //TODO need to instruct what it is that we are going to do
+            log.debug("Working on " + element)
         }
 
 		//xml --> string
 		def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
 		
-		println(xml)
+		log.debug("Unmarshaed XML: " + xml)
 		
 		HashMap<String, String> mappings = new HashMap<String, String>();
-		
-		log.error("Going to map " + contractInstance)
+
+		log.debug("Going to map " + contractInstance)
 		
 		mappings.put("title", contractInstance.description);
 		mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())

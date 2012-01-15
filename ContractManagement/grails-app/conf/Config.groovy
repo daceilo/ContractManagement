@@ -90,7 +90,9 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-	debug  '*'	  
+
+	debug  'grails.app.controllers', // all controllers
+           'grails.app.domain'       // all domain objects
 }
 
 // Added by the Spring Security Core plugin:

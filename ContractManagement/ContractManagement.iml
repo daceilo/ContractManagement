@@ -218,6 +218,8 @@
     <orderEntry type="library" name="docx4j-nightly-20120105" level="project" />
     <orderEntry type="module" module-name="ContractManagement-grailsPlugins" />
     <orderEntry type="library" name="xalan" level="project" />
+    <orderEntry type="library" name="serializer" level="project" />
+    <orderEntry type="library" name="commons-io-2.1" level="project" />
   </component>
 </module>
 
