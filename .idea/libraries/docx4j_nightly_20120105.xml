@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="docx4j-nightly-20120105">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ContractManagement/lib/docx4j-nightly-20120105.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ContractManagement/lib/docx4j-xhtmlrenderer-nightly-20111219.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

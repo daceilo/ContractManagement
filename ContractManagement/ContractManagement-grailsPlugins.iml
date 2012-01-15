@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="GrailsWeb">
+      <configuration>
+        <webroots>
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-1.7.1/web-app" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-ui-1.8.15/web-app" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/famfamfam-1.0.1/web-app" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/web-app" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0/web-app" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0/grails-app/views" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/web-app" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/grails-app/views" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-appinfo-1.0/grails-app/views" relative="/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/yui-2.8.2.1/web-app" relative="/" />
+        </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <datasource-map />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/famfamfam-1.0.1">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/famfamfam-1.0.1/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/hibernate-2.0.0" />
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-1.7.1">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-1.7.1/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-1.7.1/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-1.7.1/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-1.7.1/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-ui-1.8.15">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-ui-1.8.15/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/jquery-ui-1.8.15/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/mail-1.0/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/rendering-0.4.3">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/rendering-0.4.3/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/rendering-0.4.3/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/rendering-0.4.3/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/resources-1.1.5">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/resources-1.1.5/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/resources-1.1.5/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/resources-1.1.5/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/resources-1.1.5/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/grails-app/controllers" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-appinfo-1.0">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-appinfo-1.0/grails-app/controllers" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-core-1.2.7">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-core-1.2.7/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-core-1.2.7/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-core-1.2.7/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-core-1.2.7/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-core-1.2.7/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/grails-app/controllers" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/grails-app/domain" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/spring-security-ui-0.1.2/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/svn-1.0.0.M1">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/svn-1.0.0.M1/src/groovy" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/tomcat-2.0.0" />
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/webxml-1.4.1">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/webxml-1.4.1/src/groovy" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/yui-2.8.2.1">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/yui-2.8.2.1/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/yui-2.8.2.1/grails-app/taglib" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="grails-2.0.0" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="docx4j-nightly-20120105" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library name="Grails User Library (ContractManagement-grailsPlugins)">
+        <CLASSES>
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/org.docx4j/docx4j/jars/docx4j-2.7.1.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/org.springframework.security/spring-security-web/jars/spring-security-web-3.0.7.RELEASE.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/org.springframework.security/spring-security-core/jars/spring-security-core-3.0.7.RELEASE.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/javax.activation/activation/jars/activation-1.1.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/javax.mail/mail/jars/mail-1.4.3.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/antlr/antlr/jars/antlr-2.7.6.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/bouncycastle/bcprov-jdk14/jars/bcprov-jdk14-136.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/bouncycastle/bcmail-jdk14/jars/bcmail-jdk14-136.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/com.lowagie/itext/jars/itext-2.1.0.jar!/" />
+          <root url="jar://$USER_HOME_GRAILS$/ivy-cache/dumbster/dumbster/jars/dumbster-1.6.jar!/" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/lib" />
+          <root url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/svn-1.0.0.M1/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/richui-0.8/lib" recursive="false" />
+        <jarDirectory url="file://$USER_HOME_GRAILS$/2.0.0/projects/ContractManagement/plugins/svn-1.0.0.M1/lib" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+
