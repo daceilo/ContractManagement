@@ -128,8 +128,15 @@ class ContractController {
     // document.
     //TODO make this work with HTML formatting
 	def exportWordFromTemplate = { contractInstance, mainPart ->
-		def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement();
-		
+		def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement()
+
+        // Gives us a list of block elements
+        def blockElements = mainPart.getJaxbElement().getBody().getEGBlockLevelElts()
+
+        blockElements.each { element ->
+            //TODO need to instruct what it is that we are going to do
+        }
+
 		//xml --> string
 		def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
 		
