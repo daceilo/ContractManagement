@@ -34,102 +34,102 @@ import org.docx4j.XmlUtils;
 
 class ContractController {
 
-	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-	def index() {
-		redirect(action: "list", params: params)
-	}
+    def index() {
+        redirect(action: "list", params: params)
+    }
 
-	def list() {
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		[contractInstanceList: Contract.list(params), contractInstanceTotal: Contract.count()]
-	}
+    def list() {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [contractInstanceList: Contract.list(params), contractInstanceTotal: Contract.count()]
+    }
 
-	def create() {
-		[contractInstance: new Contract(params)]
-	}
+    def create() {
+        [contractInstance: new Contract(params)]
+    }
 
-	def save() {
-		def contractInstance = new Contract(params)
-		if (!contractInstance.save(flush: true)) {
-			render(view: "create", model: [contractInstance: contractInstance])
-			return
-		}
+    def save() {
+        def contractInstance = new Contract(params)
+        if (!contractInstance.save(flush: true)) {
+            render(view: "create", model: [contractInstance: contractInstance])
+            return
+        }
 
-		flash.message = message(code: 'default.created.message', args: [
-			message(code: 'contract.label', default: 'Contract'),
-			contractInstance.id
-		])
-		redirect(action: "show", id: contractInstance.id)
-	}
+        flash.message = message(code: 'default.created.message', args: [
+                message(code: 'contract.label', default: 'Contract'),
+                contractInstance.id
+        ])
+        redirect(action: "show", id: contractInstance.id)
+    }
 
-	def show() {
-		def contractInstance = Contract.get(params.id)
-		if (!contractInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-			return
-		}
+    def show() {
+        def contractInstance = Contract.get(params.id)
+        if (!contractInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+            return
+        }
 
-		[contractInstance: contractInstance]
-	}
+        [contractInstance: contractInstance]
+    }
 
-	def pdf() {
-		def contractInstance = Contract.get(params.id)
-		if (!contractInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-			return
-		}
-		renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
-	}
+    def pdf() {
+        def contractInstance = Contract.get(params.id)
+        if (!contractInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+            return
+        }
+        renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
+    }
 
-	def addToWord = { partName, stringToAdd, mainPart ->
-		// Have to make sure the string starts and ends properly
-		stringToAdd = stringToAdd.trim();
-		if (!stringToAdd.startsWith("<html>")) {
-			stringToAdd = "<html>" + stringToAdd
-		}
-		if (!stringToAdd.endsWith("</html>")) {
-			stringToAdd = stringToAdd + "</html>"
-		}
+    def addToWord = { partName, stringToAdd, mainPart ->
+        // Have to make sure the string starts and ends properly
+        stringToAdd = stringToAdd.trim();
+        if (!stringToAdd.startsWith("<html>")) {
+            stringToAdd = "<html>" + stringToAdd
+        }
+        if (!stringToAdd.endsWith("</html>")) {
+            stringToAdd = stringToAdd + "</html>"
+        }
 
-		// See other sources for why we do this, beyond the scope of a comment.
-		AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName(partName));
-		afiPart.setContentType(new ContentType("text/html"));
-		afiPart.setBinaryData(stringToAdd.getBytes());
-		Relationship altChunkRel = mainPart.addTargetPart(afiPart);
-		// .. the bit in document body
-		CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
-		ac.setId(altChunkRel.getId() );
-		mainPart.addObject(ac);
+        // See other sources for why we do this, beyond the scope of a comment.
+        AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName(partName));
+        afiPart.setContentType(new ContentType("text/html"));
+        afiPart.setBinaryData(stringToAdd.getBytes());
+        Relationship altChunkRel = mainPart.addTargetPart(afiPart);
+        // .. the bit in document body
+        CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
+        ac.setId(altChunkRel.getId());
+        log.debug("Ac id: " + ac.id)
         return ac
-	}
+    }
 
     // If the contract has a template associated with it, then return back a docx based on the template
     // If the contract has no template, create a new package
-	def getMLPackage = { contractInstance ->
-		def wordMLPackage
-		if (contractInstance.template) {
-			wordMLPackage = WordprocessingMLPackage.load(new ByteArrayInputStream(contractInstance?.template?.data));
-		} else {
-			wordMLPackage = WordprocessingMLPackage.createPackage()
-		}
+    def getMLPackage = { contractInstance ->
+        def wordMLPackage
+        if (contractInstance.template) {
+            wordMLPackage = WordprocessingMLPackage.load(new ByteArrayInputStream(contractInstance?.template?.data));
+        } else {
+            wordMLPackage = WordprocessingMLPackage.createPackage()
+        }
 
-		return wordMLPackage
-	}
+        return wordMLPackage
+    }
 
     // This only works if the string doesn't contain HTML. If there is HTML, elements end up being blanked out in the
     // document.
     //TODO make this work with HTML formatting
-	def exportWordFromTemplate = { contractInstance, mainPart ->
-		def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement()
+    def exportWordFromTemplate = { contractInstance, mainPart, items ->
+        def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement()
 
         // Gives us a list of block elements
         def blockElements = mainPart.getJaxbElement().getBody().getEGBlockLevelElts()
@@ -138,213 +138,225 @@ class ContractController {
         blockElements.each { element ->
             //TODO need to instruct what it is that we are going to do
             log.debug("Working on " + element)
-            // Construct CTAltHunk and add it to element
+            // Construct CTAltChunk and add it to element
         }
 
-		//xml --> string
-		def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
+        //xml --> string
+        def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
 
-		log.debug("Unmarshaed XML: " + xml)
+        log.debug("Marshalled XML: " + xml)
 
-		HashMap<String, String> mappings = new HashMap<String, String>();
+        HashMap<String, String> mappings = new HashMap<String, String>();
 
-		log.debug("Going to map " + contractInstance)
-		
-		mappings.put("title", contractInstance.description);
-		mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())
-		mappings.put("deliverables", contractInstance.deliverables)
-		mappings.put("financials", contractInstance.financials)
-		mappings.put("timelines", contractInstance.timelines)
-		mappings.put("clauses", "Clauses would go here")
-		
-		//valorize template
-		def  obj = XmlUtils.unmarshallFromTemplate(xml, mappings);		
-		
-		//change  JaxbElement
-		mainPart.setJaxbElement((Document) obj);
-	}
+        log.debug("Going to map " + contractInstance)
 
-	def exportWord() {
-		def contractInstance = Contract.get(params.id)
-		WordprocessingMLPackage wordMLPackage = getMLPackage(contractInstance)
-		def mainPart = wordMLPackage.getMainDocumentPart()
+        //<w:altChunk r:id="rId2"/>
+        // Manually put in the altChunk links
+        mappings.put("title", contractInstance.description);
+        mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())
+        mappings.put("deliverables", "<w:altChunk r:id=\"" + items.get("deliverables") + "\" />")
+        mappings.put("financials", "<w:altChunk r:id=\"" + items.get("financials") + "\" />")
+        mappings.put("timelines", "<w:altChunk r:id=\"" + items.get("timelines") + "\" />")
+        mappings.put("clauses", "Clauses would go here")
 
-		if (contractInstance.template) {
-			exportWordFromTemplate(contractInstance, mainPart)
-		} else {
-			// create some styled heading...
-			mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
-			mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
+        //valorize template
+        def obj = XmlUtils.unmarshallFromTemplate(xml, mappings);
 
-			addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables, mainPart)
+        xml = XmlUtils.marshaltoString(obj, true);
+        log.debug("After unmarshalling: " + xml)
 
-			addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines, mainPart)
+        //change  JaxbElement
+        mainPart.setJaxbElement((Document) obj);
+    }
 
-			addToWord("/financials.html", "Financials: " + contractInstance?.financials, mainPart)
+    def exportWord() {
+        def contractInstance = Contract.get(params.id)
+        WordprocessingMLPackage wordMLPackage = getMLPackage(contractInstance)
+        def mainPart = wordMLPackage.getMainDocumentPart()
+        def mappings = [:]
+        
+        mappings.put("deliverables", addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables,
+                mainPart))
+        mappings.put("timelines", addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines,
+                mainPart))
+        mappings.put("financials", addToWord("/financials.html", "Financials: " + contractInstance?.financials,
+                mainPart))
+        
+        if (contractInstance.template) {
+            exportWordFromTemplate(contractInstance, mainPart, mappings)
+        } else {
+            // create some styled heading...
+            mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
+            mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
 
+            mainPart.addObject(mappings.get("deliverables"))
 
-			// Add our list of assets to the document
-			def i = 1
-			contractInstance?.clauses?.each { clause ->
-				addToWord("/clause-" + i + ".html", clause.description, mainPart)
-				addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")", mainPart)
-				i++
-			}
-		}
-		// write out our word doc to disk
-		File file = File.createTempFile("wordexport-", ".docx")
-		wordMLPackage.save file
+            mainPart.addObject(mappings.get("timelines"))
 
-		// and send it all back to the browser
-		response.setHeader("Content-disposition", "attachment; filename=" + contractInstance?.description + ".docx");
-		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-		response.outputStream << file.readBytes()
-		file.delete()
-	}
+            mainPart.addObject(mappings.get("financials"))
 
-	def print() {
-		def contractInstance = Contract.get(params.id)
-		if (!contractInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-			return
-		}
-		[contractInstance: contractInstance]
-	}
+            // Add our list of assets to the document
+            def i = 1
+            contractInstance?.clauses?.each { clause ->
+                mainPart.addObject(addToWord("/clause-" + i + ".html", clause.description, mainPart))
+                mainPart.addObject(addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")",
+                        mainPart))
+                i++
+            }
+        }
+        // write out our word doc to disk
+        File file = File.createTempFile("wordexport-", ".docx")
+        wordMLPackage.save file
 
-	def edit() {
-		def contractInstance = Contract.get(params.id)
-		if (!contractInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-			return
-		}
+        // and send it all back to the browser
+        response.setHeader("Content-disposition", "attachment; filename=" + contractInstance?.description + ".docx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        response.outputStream << file.readBytes()
+        file.delete()
+    }
 
-		[contractInstance: contractInstance]
-	}
+    def print() {
+        def contractInstance = Contract.get(params.id)
+        if (!contractInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+            return
+        }
+        [contractInstance: contractInstance]
+    }
 
-	def update() {
-		def contractInstance = Contract.get(params.id)
-		if (!contractInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-			return
-		}
+    def edit() {
+        def contractInstance = Contract.get(params.id)
+        if (!contractInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+            return
+        }
 
-		if (params.version) {
-			def version = params.version.toLong()
-			if (contractInstance.version > version) {
-				contractInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-						[
-							message(code: 'contract.label', default: 'Contract')]
-						as Object[],
-						"Another user has updated this Contract while you were editing")
-				render(view: "edit", model: [contractInstance: contractInstance])
-				return
-			}
-		}
+        [contractInstance: contractInstance]
+    }
 
-		contractInstance.properties = params
+    def update() {
+        def contractInstance = Contract.get(params.id)
+        if (!contractInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+            return
+        }
 
-		if (!contractInstance.save(flush: true)) {
-			render(view: "edit", model: [contractInstance: contractInstance])
-			return
-		}
+        if (params.version) {
+            def version = params.version.toLong()
+            if (contractInstance.version > version) {
+                contractInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [
+                                message(code: 'contract.label', default: 'Contract')]
+                        as Object[],
+                        "Another user has updated this Contract while you were editing")
+                render(view: "edit", model: [contractInstance: contractInstance])
+                return
+            }
+        }
 
-		flash.message = message(code: 'default.updated.message', args: [
-			message(code: 'contract.label', default: 'Contract'),
-			contractInstance.id
-		])
-		redirect(action: "show", id: contractInstance.id)
-	}
+        contractInstance.properties = params
 
-	def delete() {
-		def contractInstance = Contract.get(params.id)
-		if (!contractInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-			return
-		}
+        if (!contractInstance.save(flush: true)) {
+            render(view: "edit", model: [contractInstance: contractInstance])
+            return
+        }
 
-		try {
-			contractInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "list")
-		}
-		catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [
-				message(code: 'contract.label', default: 'Contract'),
-				params.id
-			])
-			redirect(action: "show", id: params.id)
-		}
-	}
+        flash.message = message(code: 'default.updated.message', args: [
+                message(code: 'contract.label', default: 'Contract'),
+                contractInstance.id
+        ])
+        redirect(action: "show", id: contractInstance.id)
+    }
 
-	//TODO Finish this off
-	// Workflow to guide user through creation of a contract
-	def createContractFlow = {
-		beginCreate {
-			render(view: "selectVendorAndDescription")
-			on("next").to "addDeliverables"
-		}
+    def delete() {
+        def contractInstance = Contract.get(params.id)
+        if (!contractInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+            return
+        }
 
-		addDeliverables {
-			on("next").to "addFinancials"
-			on("return").to "beginCreate"
-		}
+        try {
+            contractInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "list")
+        } catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [
+                    message(code: 'contract.label', default: 'Contract'),
+                    params.id
+            ])
+            redirect(action: "show", id: params.id)
+        }
+    }
 
-		addFinancials {
-			on("next").to "addTimelines"
-			on("return").to "addDeliverables"
-		}
+    //TODO Finish this off
+    // Workflow to guide user through creation of a contract
+    def createContractFlow = {
+        beginCreate {
+            render(view: "selectVendorAndDescription")
+            on("next").to "addDeliverables"
+        }
 
-		addTimelines {
-			on("next").to "addClauses"
-			on("return").to "addFinancials"
+        addDeliverables {
+            on("next").to "addFinancials"
+            on("return").to "beginCreate"
+        }
 
-		}
+        addFinancials {
+            on("next").to "addTimelines"
+            on("return").to "addDeliverables"
+        }
 
-		addClauses {
-			on("finished").to "finished"
-			on("return").to "addTimelines"
-		}
+        addTimelines {
+            on("next").to "addClauses"
+            on("return").to "addFinancials"
 
-		finished {
-			action {
-				def description = flow.description
-				def vendor = flow.vendor
-				def deliverables = flow.deliverables
-				def timelines = flow.timelines
-				def clauses = flow.clauses
-				def financials = flow.financials
+        }
 
-				def contract = new Contract(description: description,
-						deliverables: deliverables,
-						timelines: timelines,
-						financials: financials,
-						vendor: vendor).save(flush:true)
+        addClauses {
+            on("finished").to "finished"
+            on("return").to "addTimelines"
+        }
 
-				clauses.each { clause ->
-					contract.addToClauses(clause).save(flush:true)
-				}
-				[contract: contract]
-			}
-			on(Exception).to "addClauses"
-		}
-	}
+        finished {
+            action {
+                def description = flow.description
+                def vendor = flow.vendor
+                def deliverables = flow.deliverables
+                def timelines = flow.timelines
+                def clauses = flow.clauses
+                def financials = flow.financials
+
+                def contract = new Contract(description: description,
+                        deliverables: deliverables,
+                        timelines: timelines,
+                        financials: financials,
+                        vendor: vendor).save(flush: true)
+
+                clauses.each { clause ->
+                    contract.addToClauses(clause).save(flush: true)
+                }
+                [contract: contract]
+            }
+            on(Exception).to "addClauses"
+        }
+    }
 }
