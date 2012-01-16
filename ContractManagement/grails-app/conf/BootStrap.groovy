@@ -38,10 +38,11 @@ class BootStrap {
 
 
 		}
-		
-		assert User.count() == 2
-		assert Role.count() == 2
-		assert UserRole.count() == 2
+
+        // Make sure there are at least one user, two roles and one userrole
+		assert User.count() >= 1
+		assert Role.count() >= 2
+		assert UserRole.count() >= 1
 
 		switch (Environment.current) {
 			// For dev environment, populate some data on start

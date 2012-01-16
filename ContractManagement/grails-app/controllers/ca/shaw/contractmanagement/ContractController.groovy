@@ -90,7 +90,7 @@ class ContractController {
 		renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
 	}
 
-	def addToWord = { partName, stringToAdd, wordMLPackage ->
+	def addToWord = { partName, stringToAdd, mainPart ->
 		// Have to make sure the string starts and ends properly
 		stringToAdd = stringToAdd.trim();
 		if (!stringToAdd.startsWith("<html>")) {
@@ -104,11 +104,12 @@ class ContractController {
 		AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName(partName));
 		afiPart.setContentType(new ContentType("text/html"));
 		afiPart.setBinaryData(stringToAdd.getBytes());
-		Relationship altChunkRel = wordMLPackage.getMainDocumentPart().addTargetPart(afiPart);
+		Relationship altChunkRel = mainPart.addTargetPart(afiPart);
 		// .. the bit in document body
 		CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
 		ac.setId(altChunkRel.getId() );
-		wordMLPackage.getMainDocumentPart().addObject(ac);
+		mainPart.addObject(ac);
+        return ac
 	}
 
     // If the contract has a template associated with it, then return back a docx based on the template
@@ -137,13 +138,14 @@ class ContractController {
         blockElements.each { element ->
             //TODO need to instruct what it is that we are going to do
             log.debug("Working on " + element)
+            // Construct CTAltHunk and add it to element
         }
 
 		//xml --> string
 		def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
-		
+
 		log.debug("Unmarshaed XML: " + xml)
-		
+
 		HashMap<String, String> mappings = new HashMap<String, String>();
 
 		log.debug("Going to map " + contractInstance)
@@ -174,18 +176,18 @@ class ContractController {
 			mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
 			mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
 
-			addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables, wordMLPackage)
+			addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables, mainPart)
 
-			addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines, wordMLPackage)
+			addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines, mainPart)
 
-			addToWord("/financials.html", "Financials: " + contractInstance?.financials, wordMLPackage)
+			addToWord("/financials.html", "Financials: " + contractInstance?.financials, mainPart)
 
 
 			// Add our list of assets to the document
 			def i = 1
 			contractInstance?.clauses?.each { clause ->
-				addToWord("/clause-" + i + ".html", clause.description, wordMLPackage)
-				addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")", wordMLPackage)
+				addToWord("/clause-" + i + ".html", clause.description, mainPart)
+				addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")", mainPart)
 				i++
 			}
 		}

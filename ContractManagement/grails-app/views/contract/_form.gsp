@@ -47,7 +47,7 @@
 	<label for="template">
 		<g:message code="contract.template.label" default="Template" />
 	</label>
-	<g:select id="template" name="template.id" from="${ca.shaw.contractmanagement.Template.list()}" optionKey="id" value="${contractInstance?.template?.id}" class="many-to-one"/>
+	<g:select id="template" name="template.id" from="${ca.shaw.contractmanagement.Template.list()}" noSelection="${['null':'Select One...']}" optionKey="id" value="${contractInstance?.template?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: contractInstance, field: 'vendor', 'error')} required">
