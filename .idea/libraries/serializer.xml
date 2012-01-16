@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="serializer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ContractManagement/lib/serializer.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ContractManagement/lib/xercesImpl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ContractManagement/lib/xml-apis.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
