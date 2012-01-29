@@ -162,6 +162,8 @@ class ContractController {
         //valorize template
         def obj = XmlUtils.unmarshallFromTemplate(xml, mappings);
 
+
+
         xml = XmlUtils.marshaltoString(obj, true);
         log.debug("After unmarshalling: " + xml)
 
