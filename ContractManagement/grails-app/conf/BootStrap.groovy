@@ -70,8 +70,8 @@ class BootStrap {
                     // Create a contract
 					def contractOne = new Contract(description: "SOW1",
 							deliverables: '<p><strong>Deliverables</strong></p>',
-							timelines: '<p><em>Financials</em></p>',
-							financials: '<p><span style="text-decoration: underline;">Timelines</span></p>',
+							timelines: '<p><em>Timelines</em></p>',
+							financials: '<p><span style="text-decoration: underline;">Financials</span></p>',
 							vendor: vendorOne).save(flush:true, failOnError:true)
                     //Create a template
                     def file = IOUtils.toByteArray(ApplicationHolder.application.parentContext.getResource

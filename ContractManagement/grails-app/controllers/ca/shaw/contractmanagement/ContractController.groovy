@@ -176,24 +176,21 @@ class ContractController {
 
         //TODO things are getting added in the wrong places. I think this has to do with a non one-for-one
 
-        locations.values().sort().reverseEach {
-            log.debug("--> ${it}")
-            blockElements.remove(it)
-        }
-        //blockElements.remove(locations.get("deliverables"))
-        //blockElements.remove(locations.get("financials"))
-        //blockElements.remove(locations.get("timelines"))
-        //blockElements.remove(locations.get("clauses"))
 
 
         //Contents start at 0, zero in our test template is the title bar
         mainPart.getContent().add(locations.get("deliverables"), mappings.get("deliverables"))
+        blockElements.remove(locations.get("deliverables") + 1)
         mainPart.getContent().add(locations.get("financials"), mappings.get("financials"))
+        blockElements.remove(locations.get("financials") + 1)
         mainPart.getContent().add(locations.get("timelines"), mappings.get("timelines"))
+        blockElements.remove(locations.get("timelines") + 1)
         def i = locations.get("clauses")
+        blockElements.remove(locations.get("clauses"))
         contractInstance?.clauses.each { clause ->
             mainPart.getContent().add(i, addToWord("/clause-" + i + ".html", clause.description, mainPart))
-            mainPart.getContent().add(i++, addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")",
+            mainPart.getContent().add(++i, addToWord("/clause-" + i + "-content.html",
+                    clause.content + "(" + clause.vendor + ")",
                     mainPart))
         }
 
