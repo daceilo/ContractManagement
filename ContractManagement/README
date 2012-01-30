@@ -1,0 +1,14 @@
+Bootstrap contains the basics for getting up and running. Will create admin and user users, both with "password" as password.
+
+In dev environment, contracts, clauses and vendors will all be added for testing purposes.
+
+grails-app/conf/resources contains word docx documents that are uploaded in the Dev environment (through bootstrap).
+
+By default you should end up with:
+
+* 2 users (admin and user)
+* 2 roles
+* 2 vendors
+* 2 clauses
+* 1 template
+* 1 contract associated to one vendor with one clause and a template.
