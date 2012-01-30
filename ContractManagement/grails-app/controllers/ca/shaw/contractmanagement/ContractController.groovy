@@ -90,6 +90,8 @@ class ContractController {
         renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
     }
 
+    // Will return the ID of the part added, this is important to properly add the association
+    // Why we do the below is out of scope of comments. Please see more info on www.docx4java.org
     def addToWord = { partName, stringToAdd, mainPart ->
         // Have to make sure the string starts and ends properly
         stringToAdd = stringToAdd.trim();

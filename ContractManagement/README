@@ -12,3 +12,5 @@ By default you should end up with:
 * 2 clauses
 * 1 template
 * 1 contract associated to one vendor with one clause and a template.
+
+Admin users can create Vendors and Clauses, anyone can create contracts and associate clauses to a contract.
