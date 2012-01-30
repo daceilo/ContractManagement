@@ -127,19 +127,70 @@ class ContractController {
         return wordMLPackage
     }
 
-    // This only works if the string doesn't contain HTML. If there is HTML, elements end up being blanked out in the
-    // document.
-    //TODO make this work with HTML formatting
+    /* exportWordFromTemplate
+     *
+     * Finds the places to replace text with content and does so.
+     *
+     */
     def exportWordFromTemplate = { contractInstance, mainPart, mappings ->
-        def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement()
-
+        // Gives us a list of block elements
         //TODO need to actually determine the locations for these items
+        def blockElements = mainPart.getJaxbElement().getBody().getEGBlockLevelElts()
+        log.debug("Received " + blockElements.size() + " block elements.")
+
+        // Search through each of the elements and ...
+        def c = 0
+        def locations = [:]
+        blockElements.each { element ->
+            //TODO need to instruct what it is that we are going to do
+            log.debug("Working on " + element)
+            def elementString = element.toString()
+            switch(elementString) {
+                case ~/\$\{deliverables\}/:
+                    log.debug("Found string that contains deliverables at position " + c)
+                    locations.put("deliverables", c)
+                    break
+                case ~/\$\{financials\}/:
+                    log.debug("Found string that contains financials at position " + c)
+                    locations.put("financials", c)
+                    break
+                case ~/\$\{timelines\}/:
+                    log.debug("Found string that contains timelines at position " + c)
+                    locations.put("timelines", c)
+                    break
+                case ~/\$\{clauses\}/:
+                    log.debug("Found string that contains clauses at position " + c)
+                    locations.put("clauses", c)
+                    break
+                case ~/\$\{title\}/:
+                    log.debug("Found string that contains title at position " + c)
+                    locations.put("title", c)
+                    break
+                case ~/\$\{timeGenerated\}/:
+                    log.debug("Found string that contains timeGenerated at position " + c)
+                    locations.put("timeGenerated", c)
+                    break
+            }
+            c++
+        }
+
+        //TODO things are getting added in the wrong places. I think this has to do with a non one-for-one
+
+        locations.values().sort().reverseEach {
+            log.debug("--> ${it}")
+            blockElements.remove(it)
+        }
+        //blockElements.remove(locations.get("deliverables"))
+        //blockElements.remove(locations.get("financials"))
+        //blockElements.remove(locations.get("timelines"))
+        //blockElements.remove(locations.get("clauses"))
+
+
         //Contents start at 0, zero in our test template is the title bar
-        def i = 1
-        mainPart.getContent().add(i++, mappings.get("deliverables"))
-        mainPart.getContent().add(i++, mappings.get("financials"))
-        mainPart.getContent().add(i++, mappings.get("timelines"))
-        //TODO need to put in CLAUSES!!
+        mainPart.getContent().add(locations.get("deliverables"), mappings.get("deliverables"))
+        mainPart.getContent().add(locations.get("financials"), mappings.get("financials"))
+        mainPart.getContent().add(locations.get("timelines"), mappings.get("timelines"))
+        def i = locations.get("clauses")
         contractInstance?.clauses.each { clause ->
             mainPart.getContent().add(i, addToWord("/clause-" + i + ".html", clause.description, mainPart))
             mainPart.getContent().add(i++, addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")",
@@ -148,14 +199,39 @@ class ContractController {
 
     }
 
+    /* exportWordNoTemplate
+     *
+     * Builds a document from the ground up, very basic.
+     *
+     */
+    def exportWordNoTemplate = { contractInstance, mainPart, mappings ->
+        // create some styled heading...
+        mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
+        mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
+
+        mainPart.addObject(mappings.get("deliverables"))
+
+        mainPart.addObject(mappings.get("timelines"))
+
+        mainPart.addObject(mappings.get("financials"))
+
+        // Add our list of assets to the document
+        def i = 1
+        contractInstance?.clauses?.each { clause ->
+            mainPart.addObject(addToWord("/clause-" + i + ".html", clause.description, mainPart))
+            mainPart.addObject(addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")",
+                    mainPart))
+            i++
+        }
+    }
+
     def exportWord() {
         def contractInstance = Contract.get(params.id)
-        WordprocessingMLPackage wordMLPackage = getMLPackage(contractInstance)
+        def wordMLPackage = (WordprocessingMLPackage) getMLPackage(contractInstance)
         def mainPart = wordMLPackage.getMainDocumentPart()
         def mappings = [:]
 
-
-
+        // Map with the key items, plus the relationship ID from addToWord
         mappings.put("deliverables", addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables,
                 mainPart))
         mappings.put("timelines", addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines,
@@ -163,30 +239,12 @@ class ContractController {
         mappings.put("financials", addToWord("/financials.html", "Financials: " + contractInstance?.financials,
                 mainPart))
 
-        if (contractInstance.template) {
-            exportWordFromTemplate(contractInstance, mainPart, mappings)
-        } else {
-            // create some styled heading...
-            mainPart.addStyledParagraphOfText("Title", contractInstance?.description)
-            mainPart.addStyledParagraphOfText("Subtitle", "Generated at " + Calendar.getInstance().getTime().toString())
+        // If the template exists, then we must use it, otherwise create a new document.
+        contractInstance.template ? exportWordFromTemplate(contractInstance, mainPart, mappings) :
+            exportWordNoTemplate(contractInstance, mainPart, mappings)
 
-            mainPart.addObject(mappings.get("deliverables"))
-
-            mainPart.addObject(mappings.get("timelines"))
-
-            mainPart.addObject(mappings.get("financials"))
-
-            // Add our list of assets to the document
-            def i = 1
-            contractInstance?.clauses?.each { clause ->
-                mainPart.addObject(addToWord("/clause-" + i + ".html", clause.description, mainPart))
-                mainPart.addObject(addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")",
-                        mainPart))
-                i++
-            }
-        }
-        // write out our word doc to disk
-        File file = File.createTempFile("wordexport-", ".docx")
+        // write out our word doc to disk - is this thread safe?!
+        def file = File.createTempFile("wordexport-", ".docx")
         wordMLPackage.save file
 
         // and send it all back to the browser
