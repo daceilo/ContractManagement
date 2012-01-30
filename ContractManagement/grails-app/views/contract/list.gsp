@@ -35,7 +35,7 @@
 					
 						<th><g:message code="contract.vendor.label" default="Vendor" /></th>
 						
-						<th>PDF</th>
+						<th>Export</th>
 					
 					</tr>
 				</thead>

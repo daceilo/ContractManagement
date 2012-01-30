@@ -127,6 +127,25 @@ class ContractController {
         return wordMLPackage
     }
 
+    def handleNonHTML = { mainPart, contractInstance ->
+        def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement();
+
+        //xml --> string
+        def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
+
+        HashMap<String, String> mappings = new HashMap<String, String>();
+
+        log.debug("Going to map " + contractInstance)
+
+        mappings.put("title", contractInstance.description.toString());
+        mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())
+
+        //valorize template
+        def  obj = XmlUtils.unmarshallFromTemplate(xml, mappings);
+
+        //change  JaxbElement
+        mainPart.setJaxbElement((Document) obj);
+    }
     /* exportWordFromTemplate
      *
      * Finds the places to replace text with content and does so.
@@ -134,7 +153,6 @@ class ContractController {
      */
     def exportWordFromTemplate = { contractInstance, mainPart, mappings ->
         // Gives us a list of block elements
-        //TODO need to actually determine the locations for these items
         def blockElements = mainPart.getJaxbElement().getBody().getEGBlockLevelElts()
         log.debug("Received " + blockElements.size() + " block elements.")
 
@@ -174,17 +192,19 @@ class ContractController {
             c++
         }
 
-        //TODO things are getting added in the wrong places. I think this has to do with a non one-for-one
-
-
 
         //Contents start at 0, zero in our test template is the title bar
+        // After we add in an element, we must remove the placeholder.
         mainPart.getContent().add(locations.get("deliverables"), mappings.get("deliverables"))
         blockElements.remove(locations.get("deliverables") + 1)
         mainPart.getContent().add(locations.get("financials"), mappings.get("financials"))
         blockElements.remove(locations.get("financials") + 1)
         mainPart.getContent().add(locations.get("timelines"), mappings.get("timelines"))
         blockElements.remove(locations.get("timelines") + 1)
+        mainPart.getContent().add(locations.get("timeGenerated"), mappings.get("timeGenerated"))
+        blockElements.remove(locations.get("timeGenerated") + 1)
+        mainPart.getContent().add(locations.get("title"), mappings.get("title"))
+        blockElements.remove(locations.get("title") + 1)
         def i = locations.get("clauses")
         blockElements.remove(locations.get("clauses"))
         contractInstance?.clauses.each { clause ->
@@ -193,7 +213,6 @@ class ContractController {
                     clause.content + "(" + clause.vendor + ")",
                     mainPart))
         }
-
     }
 
     /* exportWordNoTemplate
@@ -235,6 +254,10 @@ class ContractController {
                 mainPart))
         mappings.put("financials", addToWord("/financials.html", "Financials: " + contractInstance?.financials,
                 mainPart))
+        mappings.put("title", addToWord("/title.html", contractInstance?.description, mainPart))
+
+        mappings.put("timeGenerated", addToWord("/timeGenerated.html", "Generated at " +
+                Calendar.getInstance().getTime().toString(), mainPart))
 
         // If the template exists, then we must use it, otherwise create a new document.
         contractInstance.template ? exportWordFromTemplate(contractInstance, mainPart, mappings) :
