@@ -172,7 +172,13 @@
           <root url="jar://$MODULE_DIR$/lib/docx4j-nightly-20120105.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../docx4j/src/docx4j-extras/jcr" />
+          <root url="file://$MODULE_DIR$/../../docx4j/src/docx4j-extras/PdfViaHtml" />
+          <root url="file://$MODULE_DIR$/../../docx4j/src/docx4j-extras/PdfViaIText" />
+          <root url="file://$MODULE_DIR$/../../docx4j/src/docx4j-extras/vfs" />
+          <root url="file://$MODULE_DIR$/../../docx4j/src/main/java" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">

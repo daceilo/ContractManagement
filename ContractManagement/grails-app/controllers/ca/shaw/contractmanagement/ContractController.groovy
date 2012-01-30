@@ -130,47 +130,22 @@ class ContractController {
     // This only works if the string doesn't contain HTML. If there is HTML, elements end up being blanked out in the
     // document.
     //TODO make this work with HTML formatting
-    def exportWordFromTemplate = { contractInstance, mainPart, items ->
+    def exportWordFromTemplate = { contractInstance, mainPart, mappings ->
         def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement()
 
-        // Gives us a list of block elements
-        def blockElements = mainPart.getJaxbElement().getBody().getEGBlockLevelElts()
-        log.debug("Received " + blockElements.size() + " block elements.")
-
-        blockElements.each { element ->
-            //TODO need to instruct what it is that we are going to do
-            log.debug("Working on " + element)
-            // Construct CTAltChunk and add it to element
+        //TODO need to actually determine the locations for these items
+        //Contents start at 0, zero in our test template is the title bar
+        def i = 1
+        mainPart.getContent().add(i++, mappings.get("deliverables"))
+        mainPart.getContent().add(i++, mappings.get("financials"))
+        mainPart.getContent().add(i++, mappings.get("timelines"))
+        //TODO need to put in CLAUSES!!
+        contractInstance?.clauses.each { clause ->
+            mainPart.getContent().add(i, addToWord("/clause-" + i + ".html", clause.description, mainPart))
+            mainPart.getContent().add(i++, addToWord("/clause-" + i + "-content.html", clause.content + "(" + clause.vendor + ")",
+                    mainPart))
         }
 
-        //xml --> string
-        def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
-
-        log.debug("Marshalled XML: " + xml)
-
-        HashMap<String, String> mappings = new HashMap<String, String>();
-
-        log.debug("Going to map " + contractInstance)
-
-        //<w:altChunk r:id="rId2"/>
-        // Manually put in the altChunk links
-        mappings.put("title", contractInstance.description);
-        mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())
-        mappings.put("deliverables", "<w:altChunk r:id=\"" + items.get("deliverables") + "\" />")
-        mappings.put("financials", "<w:altChunk r:id=\"" + items.get("financials") + "\" />")
-        mappings.put("timelines", "<w:altChunk r:id=\"" + items.get("timelines") + "\" />")
-        mappings.put("clauses", "Clauses would go here")
-
-        //valorize template
-        def obj = XmlUtils.unmarshallFromTemplate(xml, mappings);
-
-
-
-        xml = XmlUtils.marshaltoString(obj, true);
-        log.debug("After unmarshalling: " + xml)
-
-        //change  JaxbElement
-        mainPart.setJaxbElement((Document) obj);
     }
 
     def exportWord() {
@@ -179,13 +154,15 @@ class ContractController {
         def mainPart = wordMLPackage.getMainDocumentPart()
         def mappings = [:]
 
+
+
         mappings.put("deliverables", addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables,
                 mainPart))
         mappings.put("timelines", addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines,
                 mainPart))
         mappings.put("financials", addToWord("/financials.html", "Financials: " + contractInstance?.financials,
                 mainPart))
-        
+
         if (contractInstance.template) {
             exportWordFromTemplate(contractInstance, mainPart, mappings)
         } else {
