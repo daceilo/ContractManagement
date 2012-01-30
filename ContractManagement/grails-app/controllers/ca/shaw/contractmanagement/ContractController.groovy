@@ -178,7 +178,7 @@ class ContractController {
         WordprocessingMLPackage wordMLPackage = getMLPackage(contractInstance)
         def mainPart = wordMLPackage.getMainDocumentPart()
         def mappings = [:]
-        
+
         mappings.put("deliverables", addToWord("/deliverables.html", "Deliverables: " + contractInstance?.deliverables,
                 mainPart))
         mappings.put("timelines", addToWord("/timelines.html", "Timelines: " + contractInstance?.timelines,
