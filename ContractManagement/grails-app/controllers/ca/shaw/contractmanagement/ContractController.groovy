@@ -28,9 +28,7 @@ import org.docx4j.openpackaging.parts.PartName
 import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart
 import org.docx4j.relationships.Relationship
 import org.docx4j.wml.CTAltChunk
-import org.docx4j.wml.Document
 import org.docx4j.jaxb.Context;
-import org.docx4j.XmlUtils;
 
 class ContractController {
 
@@ -127,25 +125,6 @@ class ContractController {
         return wordMLPackage
     }
 
-    def handleNonHTML = { mainPart, contractInstance ->
-        def wmlDocumentEl = (org.docx4j.wml.Document) mainPart.getJaxbElement();
-
-        //xml --> string
-        def xml = XmlUtils.marshaltoString(wmlDocumentEl, true);
-
-        HashMap<String, String> mappings = new HashMap<String, String>();
-
-        log.debug("Going to map " + contractInstance)
-
-        mappings.put("title", contractInstance.description.toString());
-        mappings.put("timeGenerated", Calendar.getInstance().getTime().toString())
-
-        //valorize template
-        def  obj = XmlUtils.unmarshallFromTemplate(xml, mappings);
-
-        //change  JaxbElement
-        mainPart.setJaxbElement((Document) obj);
-    }
     /* exportWordFromTemplate
      *
      * Finds the places to replace text with content and does so.
@@ -160,7 +139,6 @@ class ContractController {
         def c = 0
         def locations = [:]
         blockElements.each { element ->
-            //TODO need to instruct what it is that we are going to do
             log.debug("Working on " + element)
             def elementString = element.toString()
             switch(elementString) {
