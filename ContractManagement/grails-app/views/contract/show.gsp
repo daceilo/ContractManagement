@@ -16,72 +16,72 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list contract">
-			
+
 				<g:if test="${contractInstance?.description}">
 				<li class="fieldcontain">
 					<span id="description-label" class="property-label"><g:message code="contract.description.label" default="Description" /></span>
-					
+
 						<span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${contractInstance}" field="description"/></span>
-					
+
 				</li>
 				</g:if>
-			
+
 				<g:if test="${contractInstance?.deliverables}">
 				<li class="fieldcontain">
 					<span id="deliverables-label" class="property-label"><g:message code="contract.deliverables.label" default="Deliverables" /></span>
-					
+
 						<span class="property-value" aria-labelledby="deliverables-label">${contractInstance?.deliverables}</span>
-					
+
 				</li>
 				</g:if>
-			
+
 				<g:if test="${contractInstance?.timelines}">
 				<li class="fieldcontain">
 					<span id="timelines-label" class="property-label"><g:message code="contract.timelines.label" default="Timelines" /></span>
-					
+
 						<span class="property-value" aria-labelledby="timelines-label">${contractInstance?.timelines}</span>
-					
+
 				</li>
 				</g:if>
-			
+
 				<g:if test="${contractInstance?.financials}">
 				<li class="fieldcontain">
 					<span id="financials-label" class="property-label"><g:message code="contract.financials.label" default="Financials" /></span>
-					
+
 						<span class="property-value" aria-labelledby="financials-label">${contractInstance?.financials}</span>
-					
+
 				</li>
 				</g:if>
-			
+
 				<g:if test="${contractInstance?.clauses}">
 				<li class="fieldcontain">
 					<span id="clauses-label" class="property-label"><g:message code="contract.clauses.label" default="Clauses" /></span>
-					
+
 						<g:each in="${contractInstance.clauses}" var="c">
 						<span class="property-value" aria-labelledby="clauses-label"><g:link controller="clause" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
 						</g:each>
-					
+
 				</li>
 				</g:if>
-			
+
 			<g:if test="${contractInstance?.template}">
 				<li class="fieldcontain">
 					<span id="template-label" class="property-label"><g:message code="contract.template.label" default="Template" /></span>
-					
+
 						<span class="property-value" aria-labelledby="template-label"><g:link controller="template" action="show" id="${contractInstance?.template?.id}">${contractInstance?.template?.encodeAsHTML()}</g:link></span>
-					
+
 				</li>
 				</g:if>
-			
+
 				<g:if test="${contractInstance?.vendor}">
 				<li class="fieldcontain">
 					<span id="vendor-label" class="property-label"><g:message code="contract.vendor.label" default="Vendor" /></span>
-					
+
 						<span class="property-value" aria-labelledby="vendor-label"><g:link controller="vendor" action="show" id="${contractInstance?.vendor?.id}">${contractInstance?.vendor?.encodeAsHTML()}</g:link></span>
-					
+
 				</li>
 				</g:if>
-			
+
 			</ol>
 			<g:form>
 				<fieldset class="buttons">
