@@ -197,7 +197,7 @@ class ContractController {
         // elements.
         def i = locations.get("clauses")
         blockElements.remove(locations.get("clauses"))
-        contractInstance?.clauses.each { clause ->
+        contractInstance?.clauses?.each { clause ->
             mainPart.getContent().add(i++, addToWord("/clause-" + i + ".html", clause.description, mainPart))
             mainPart.getContent().add(i++, addToWord("/clause-" + i + "-content.html",
                     clause.content + "(" + clause.vendor + ")",
@@ -400,8 +400,8 @@ class ContractController {
                         financials: financials,
                         vendor: vendor).save(flush: true)
 
-                clauses.each { clause ->
-                    contract.addToClauses(clause).save(flush: true)
+                clauses?.each { clause ->
+                    contract.addToClauses(clause).save flush: true
                 }
                 [contract: contract]
             }
