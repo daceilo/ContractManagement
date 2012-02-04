@@ -88,6 +88,9 @@ class ContractController {
         renderPdf(template: "/contract/pdf", model: [contractInstance: contractInstance], filename: contractInstance.description)
     }
 
+
+    //TODO pull all the word manipulation stuff into a service
+
     // Will return the ID of the part added, this is important to properly add the association
     // Why we do the below is out of scope of comments. Please see more info on www.docx4java.org
     def addToWord = { partName, stringToAdd, mainPart ->
@@ -175,19 +178,28 @@ class ContractController {
         // After we add in an element, we must remove the placeholder.
         mainPart.getContent().add(locations.get("deliverables"), mappings.get("deliverables"))
         blockElements.remove(locations.get("deliverables") + 1)
+
         mainPart.getContent().add(locations.get("financials"), mappings.get("financials"))
         blockElements.remove(locations.get("financials") + 1)
+
         mainPart.getContent().add(locations.get("timelines"), mappings.get("timelines"))
         blockElements.remove(locations.get("timelines") + 1)
+
         mainPart.getContent().add(locations.get("timeGenerated"), mappings.get("timeGenerated"))
         blockElements.remove(locations.get("timeGenerated") + 1)
+
         mainPart.getContent().add(locations.get("title"), mappings.get("title"))
         blockElements.remove(locations.get("title") + 1)
+
+        // Clasues always have to be inserted last. If we don't, then we have to calculate where in the
+        // list they are being added (Because we add two elements instead of one like above). If we added
+        // them earlier, this would create formatting issues where clauses would be inserted into other
+        // elements.
         def i = locations.get("clauses")
         blockElements.remove(locations.get("clauses"))
         contractInstance?.clauses.each { clause ->
-            mainPart.getContent().add(i, addToWord("/clause-" + i + ".html", clause.description, mainPart))
-            mainPart.getContent().add(++i, addToWord("/clause-" + i + "-content.html",
+            mainPart.getContent().add(i++, addToWord("/clause-" + i + ".html", clause.description, mainPart))
+            mainPart.getContent().add(i++, addToWord("/clause-" + i + "-content.html",
                     clause.content + "(" + clause.vendor + ")",
                     mainPart))
         }
